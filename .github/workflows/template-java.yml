@@ -43,16 +43,12 @@ jobs:
           sudo tar xzvf apache-maven-3.8.7-bin.tar.gz -C /opt
           sudo ln -s /opt/apache-maven-3.8.7 /opt/maven
           
-          # Add Maven to the system path
-          sudo tee /etc/profile.d/maven.sh << 'EOL'
-          export M2_HOME=/opt/maven
-          export PATH=${M2_HOME}/bin:${PATH}
-          EOL
-          sudo chmod +x /etc/profile.d/maven.sh
-          source /etc/profile.d/maven.sh
+          # Install Maven (latest version from the repository)
+          sudo apt install maven -y
 
           # Verify Maven installation
           mvn -version
+          EOF
 
       - name: Clean using Maven command
         run: |
