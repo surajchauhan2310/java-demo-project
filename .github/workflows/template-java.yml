@@ -22,15 +22,15 @@ jobs:
       #     ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
 
 
-      # - name: Add SSH key
-      #   uses: webfactory/ssh-agent@v0.9.0
-      #   with:
-      #     ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
 
-      - name: Add SSH key to Agent
-        run: |
-          eval "$(ssh-agent -s)"
-          ssh-add - <<< "${{ secrets.EC2_SSH_KEY }}"
+      # - name: Add SSH key to Agent
+      #   run: |
+      #     eval "$(ssh-agent -s)"
+      #     ssh-add - <<< "${{ secrets.EC2_SSH_KEY }}"
       
       - name: Connect to EC2 instance and install OpenJDK 17
         run: |
