@@ -116,15 +116,15 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd java-demo-project && ls -la'
 
 
-      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && mvn clean'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/java-demo-project && mvn clean'
 
-      # - name: Build the package using Maven command
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && mvn package'
+      - name: Build the package using Maven command
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/java-demo-project && mvn package'
 
       # - name: Run the app
       #   run: |
-      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && java -jar your-app.jar'
+      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/java-demo-project && java -jar your-app.jar'
       #   #  java -jar target/
         
 
