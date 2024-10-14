@@ -48,7 +48,21 @@ jobs:
 
           # Verify Maven installation
           mvn -version
-          EOF
+          
+      - name: Connect to EC2 instance and set up the project
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+          # Update package list and install Git
+          sudo apt update -y
+          sudo apt install git -y
+
+          # Clone the project if it doesn't exist
+          if [ ! -d "java-demo-project" ]; then
+            git clone git@github.com:surajchauhan2310/java-demo-project.git
+          fi
+
+          # Navigate to the project directory
+          cd java-demo-project
 
       - name: Clean using Maven command
         run: |
