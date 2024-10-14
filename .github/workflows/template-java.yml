@@ -73,14 +73,14 @@ jobs:
           # Test SSH connection to GitHub
           ssh -T git@github.com || true  # Ignore failure for testing connection
           
-          # Clone the project using HTTPS and GitHub token for authentication
+          # Clone the project using HTTPS and GitHub token
           if [ ! -d "java-demo-project" ]; then
-            git clone https://<surajchauhan2310>:${{ secrets.GITHUB_TOKEN }}@github.com/surajchauhan2310/java-demo-project.git
+            git clone https://surajchauhan2310:${{ secrets.GITHUB_TOKEN }}@github.com/surajchauhan2310/java-demo-project.git
           fi
           
           # Navigate to the project directory
           cd java-demo-project
-          EOF
+          # EOF
           
           # Navigate to the project directory
           cd java-demo-project
