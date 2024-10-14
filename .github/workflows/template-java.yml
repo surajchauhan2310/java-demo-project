@@ -7,30 +7,10 @@ jobs:
       - name: Checking out the code from the repository
         uses: actions/checkout@v4
 
-      # - name: Configure AWS credentials
-      #   id: creds
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ${{ secrets.AWS_REGION }} 
-      #     output-credentials: true  # Optional, depending on your use case
-
-      # - name: Add SSH key
-      #   uses: webfactory/ssh-agent@v0.9.0
-      #   with:
-      #     ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
-
-
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
-
-      # - name: Add SSH key to Agent
-      #   run: |
-      #     eval "$(ssh-agent -s)"
-      #     ssh-add - <<< "${{ secrets.EC2_SSH_KEY }}"
       
       - name: Connect to EC2 instance and install OpenJDK 17
         run: |
@@ -60,39 +40,6 @@ jobs:
           # Verify Maven installation
           mvn -version
 
-      # - name: Connect to EC2 instance and set up the project
-      #   run: |
-      #    ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-      #     # Update package list and install Git
-      #     sudo apt update -y
-      #     sudo apt install git -y
-          
-      #     # Add GitHub to known hosts
-      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      #     # Test SSH connection to GitHub
-      #     ssh -T git@github.com || true  # Ignore failure for testing connection
-          
-      #     # Clone the project using HTTPS and GitHub token
-      #     if [ ! -d "java-demo-project" ]; then
-      #       git clone https://surajchauhan2310:${{ secrets.GITHUB_TOKEN }}@github.com/surajchauhan2310/java-demo-project.git
-      #     fi
-          
-      #     # Navigate to the project directory
-      #     cd java-demo-project
-      #     # EOF
-          
-      #     # Navigate to the project directory
-      #     cd java-demo-project
-
-     
-
-      # - name: Clean using Maven command
-      #   run: |
-      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'pwd'
-      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la' 
-      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd java-demo-project' 
-      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la' 
       - name: Clone project using HTTPS with GitHub token
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
@@ -114,7 +61,6 @@ jobs:
       - name: Verify project directory
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd java-demo-project && ls -la'
-
 
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/java-demo-project && mvn clean'
 
