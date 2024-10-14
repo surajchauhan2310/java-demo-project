@@ -56,6 +56,9 @@ jobs:
           sudo apt update -y
           sudo apt install git -y
 
+          # Add GitHub to known hosts
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
           # Clone the project if it doesn't exist
           if [ ! -d "java-demo-project" ]; then
             git clone git@github.com:surajchauhan2310/java-demo-project.git
@@ -63,6 +66,7 @@ jobs:
 
           # Navigate to the project directory
           cd java-demo-project
+     
 
       - name: Clean using Maven command
         run: |
