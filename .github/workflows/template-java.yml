@@ -52,7 +52,7 @@ jobs:
 
       - name: Clean using Maven command
         run: |
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la'
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'pwd && cd java-demo-project && ls -la &&' 
       #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && mvn clean'
 
       # - name: Build the package using Maven command
