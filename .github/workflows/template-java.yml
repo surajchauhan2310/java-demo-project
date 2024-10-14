@@ -1,0 +1,111 @@
+name: deploying the java project actions on EC2
+on: workflow_dispatch
+jobs:
+  deploy-on-ec2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out the code from the repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }} 
+          output-credentials: true  # Optional, depending on your use case
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
+
+      - name: Connect to EC2 instance and install OpenJDK 17
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+          # Update package list
+          sudo apt update
+
+          # Install OpenJDK 17
+          sudo apt install openjdk-17-jdk -y
+
+          # Set Java 17 as default
+          sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+          sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+
+          # Verify Java installation
+          java -version
+          javac -version
+          
+          # Install Maven 3.8.7
+          wget https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz
+          sudo tar xzvf apache-maven-3.8.7-bin.tar.gz -C /opt
+          sudo ln -s /opt/apache-maven-3.8.7 /opt/maven
+          
+          # Add Maven to the system path
+          sudo tee /etc/profile.d/maven.sh << 'EOL'
+          export M2_HOME=/opt/maven
+          export PATH=${M2_HOME}/bin:${PATH}
+          EOL
+          sudo chmod +x /etc/profile.d/maven.sh
+          source /etc/profile.d/maven.sh
+
+          # Verify Maven installation
+          mvn -version
+
+      - name: Clean using Maven command
+        run: |
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la'
+      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && mvn clean'
+
+      # - name: Build the package using Maven command
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && mvn package'
+
+      # - name: Run the app
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && java -jar your-app.jar'
+      #   #  java -jar target/
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
