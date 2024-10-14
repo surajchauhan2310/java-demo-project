@@ -60,39 +60,60 @@ jobs:
           # Verify Maven installation
           mvn -version
 
-      - name: Connect to EC2 instance and set up the project
-        run: |
-         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
-          # Update package list and install Git
-          sudo apt update -y
-          sudo apt install git -y
+      # - name: Connect to EC2 instance and set up the project
+      #   run: |
+      #    ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+      #     # Update package list and install Git
+      #     sudo apt update -y
+      #     sudo apt install git -y
           
-          # Add GitHub to known hosts
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+      #     # Add GitHub to known hosts
+      #     ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-          # Test SSH connection to GitHub
-          ssh -T git@github.com || true  # Ignore failure for testing connection
+      #     # Test SSH connection to GitHub
+      #     ssh -T git@github.com || true  # Ignore failure for testing connection
           
-          # Clone the project using HTTPS and GitHub token
-          if [ ! -d "java-demo-project" ]; then
-            git clone https://surajchauhan2310:${{ secrets.GITHUB_TOKEN }}@github.com/surajchauhan2310/java-demo-project.git
-          fi
+      #     # Clone the project using HTTPS and GitHub token
+      #     if [ ! -d "java-demo-project" ]; then
+      #       git clone https://surajchauhan2310:${{ secrets.GITHUB_TOKEN }}@github.com/surajchauhan2310/java-demo-project.git
+      #     fi
           
-          # Navigate to the project directory
-          cd java-demo-project
-          # EOF
+      #     # Navigate to the project directory
+      #     cd java-demo-project
+      #     # EOF
           
-          # Navigate to the project directory
-          cd java-demo-project
+      #     # Navigate to the project directory
+      #     cd java-demo-project
 
      
 
-      - name: Clean using Maven command
+      # - name: Clean using Maven command
+      #   run: |
+      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'pwd'
+      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la' 
+      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd java-demo-project' 
+      #       ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la' 
+      - name: Clone project using HTTPS with GitHub token
         run: |
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'pwd'
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la' 
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd java-demo-project' 
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'ls -la' 
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+          sudo apt update -y
+          sudo apt install git -y
+          
+          # Remove any existing SSH config that may interfere with cloning via HTTPS
+          rm -f ~/.ssh/config
+
+          # Clone the project using HTTPS and GitHub token
+          if [ ! -d "java-demo-project" ]; then
+            git clone https://<your-github-username>:${{ secrets.GITHUB_TOKEN }}@github.com/surajchauhan2310/java-demo-project.git
+          fi
+          
+          cd java-demo-project
+          ls -la
+          EOF
+
+      - name: Verify project directory
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd java-demo-project && ls -la'
 
 
       #     ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} 'cd /home/ubuntu/ && mvn clean'
