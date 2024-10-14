@@ -22,10 +22,15 @@ jobs:
       #     ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
 
 
-      - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
+      # - name: Add SSH key
+      #   uses: webfactory/ssh-agent@v0.9.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Your SSH private key stored in secrets
+
+      - name: Add SSH key to Agent
+        run: |
+          eval "$(ssh-agent -s)"
+          ssh-add - <<< "${{ secrets.EC2_SSH_KEY }}"
       
       - name: Connect to EC2 instance and install OpenJDK 17
         run: |
@@ -57,22 +62,24 @@ jobs:
 
       - name: Connect to EC2 instance and set up the project
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           # Update package list and install Git
           sudo apt update -y
           sudo apt install git -y
-
+          
           # Add GitHub to known hosts
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
+          # Test SSH connection to GitHub
+          ssh -T git@github.com || true  # Ignore failure for testing connection
+          
           # Clone the project if it doesn't exist
           if [ ! -d "java-demo-project" ]; then
             git clone git@github.com:surajchauhan2310/java-demo-project.git
           fi
-
+          
           # Navigate to the project directory
           cd java-demo-project
-          EOF
 
      
 
