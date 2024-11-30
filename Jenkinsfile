@@ -4,7 +4,7 @@ pipeline {
   triggers {
    githubPush()  // This listens for GitHub push events and trying to impelment the webhooks into it
   }
-
+//testing the webhooks
   stages {
     stage('01.Clone Repo') {
       steps {
