@@ -2,11 +2,15 @@ pipeline {
   agent any
 
   triggers {
-   githubPush()  // This listens for GitHub push events and trying to impelment the webhooks into it
+    githubPush()  // This listens for GitHub push events
   }
+<<<<<<< HEAD
 //testing the webhooks again.
 //testing the webhooks again2.
   //testing the webhooks again3.
+=======
+
+>>>>>>> e7a7dc2 (adding the java run steps into the Jenkinsfile)
   stages {
     stage('01.Clone Repo') {
       steps {
@@ -26,9 +30,8 @@ pipeline {
     stage('04.Run Application') {
       steps {
         script {
-          def pom = readMavenPom file: 'pom.xml'
-          def artifact = "${pom.artifactId}-${pom.version}.jar"
-          sh "java -jar target/${artifact}"
+          // Use Maven to run the application instead of manually invoking the JAR
+          sh 'mvn spring-boot:run'
         }
       }
     }
