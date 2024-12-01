@@ -4,13 +4,13 @@ pipeline {
   triggers {
     githubPush()  // This listens for GitHub push events
   }
-<<<<<<< HEAD
+
 //testing the webhooks again.
 //testing the webhooks again2.
   //testing the webhooks again3.
-=======
 
->>>>>>> e7a7dc2 (adding the java run steps into the Jenkinsfile)
+
+
   stages {
     stage('01.Clone Repo') {
       steps {
