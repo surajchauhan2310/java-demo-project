@@ -22,5 +22,14 @@ pipeline {
         sh 'mvn package'
       }
     }
+    stage('04.Run Application') {
+      steps {
+        script {
+          def pom = readMavenPom file: 'pom.xml'
+          def artifact = "${pom.artifactId}-${pom.version}.jar"
+          sh "java -jar target/${artifact}"
+        }
+      }
+    }
   }
 }
