@@ -1,43 +1,54 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <modelVersion>4.0.0</modelVersion>
-
-  <!-- Spring Boot Parent POM -->
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.10</version> <!-- Use the latest stable version of Spring Boot -->
-  </parent>
-
-  <!-- Project coordinates -->
-  <groupId>com.example</groupId>
-  <artifactId>suraj</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <dependencies>
-    <!-- Spring Boot Web Starter for building web applications -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <!-- No version needed because Spring Boot manages the version -->
-    </dependency>
-    <!-- other dependencies -->
-  </dependencies>
-
-  <!-- Build configuration -->
-  <build>
-    <plugins>
-      <!-- Spring Boot Maven Plugin -->
-      <plugin>
+    <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.10</version> <!-- Make sure you're using the appropriate Spring Boot version -->
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>suraj</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- Spring Boot Web Starter (already added, no changes needed) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- JUnit 5 (Jupiter) for testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring Boot Starter Test for Spring Boot testing support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
+
+
 
 
