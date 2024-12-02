@@ -31,7 +31,7 @@ pipeline {
       steps {
         script {
           // Use Maven to run the application instead of manually invoking the JAR
-          sh 'mvn spring-boot:run'
+          sh 'mvn spring-boot:run &'
         }
       }
     }
